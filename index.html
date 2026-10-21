@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>025:00 - Time to focus!</title>
+  <title>025:00 - Thời gian tập trung!</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts & FontAwesome Icons -->
@@ -78,7 +78,7 @@
     <div class="flex items-center gap-2">
       <button onclick="openSettingsModal()" class="flex items-center gap-1.5 bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition backdrop-blur-sm">
         <i class="fa-solid fa-gear text-xs"></i>
-        <span>Settings</span>
+        <span>Cài đặt</span>
       </button>
     </div>
   </header>
@@ -95,10 +95,10 @@
           Pomodoro
         </button>
         <button id="tab-shortBreak" onclick="switchMode('shortBreak')" class="flex-1 py-1.5 px-3 rounded-lg transition-all duration-200 opacity-80 hover:opacity-100">
-          Short Break
+          Nghỉ ngắn
         </button>
         <button id="tab-longBreak" onclick="switchMode('longBreak')" class="flex-1 py-1.5 px-3 rounded-lg transition-all duration-200 opacity-80 hover:opacity-100">
-          Long Break
+          Nghỉ dài
         </button>
       </div>
 
@@ -109,15 +109,15 @@
 
       <!-- Active Task Label Indicator inside timer -->
       <div id="current-task-display" class="text-white/80 text-sm font-medium mb-6 min-h-[1.25rem] text-center max-w-xs truncate">
-        #1 Time to focus!
+        #1 Thời gian tập trung!
       </div>
 
       <!-- Action Buttons (Start/Pause & Skip) -->
       <div class="flex items-center gap-4 w-full justify-center">
         <button id="start-btn" onclick="toggleTimer()" class="btn-press uppercase tracking-wider text-2xl font-bold px-12 py-3.5 rounded-xl bg-white text-pomo-work shadow-[0_6px_0_#ebebeb] hover:bg-white/95 transition-all w-48">
-          START
+          BẮT ĐẦU
         </button>
-        <button id="skip-btn" onclick="skipTimer()" class="hidden text-white/70 hover:text-white p-3 text-xl transition" title="Next Mode">
+        <button id="skip-btn" onclick="skipTimer()" class="hidden text-white/70 hover:text-white p-3 text-xl transition" title="Chế độ tiếp theo">
           <i class="fa-solid fa-forward"></i>
         </button>
       </div>
@@ -126,7 +126,7 @@
     <!-- Task Management Section -->
     <div class="w-full flex flex-col gap-4">
       <div class="flex items-center justify-between border-b border-white/20 pb-3">
-        <h2 class="text-lg font-semibold tracking-wide">Tasks</h2>
+        <h2 class="text-lg font-semibold tracking-wide">Công việc</h2>
         <div class="relative group">
           <button onclick="toggleTaskMenu()" class="bg-white/20 hover:bg-white/30 p-2 rounded-lg text-sm transition">
             <i class="fa-solid fa-ellipsis-vertical px-1"></i>
@@ -134,10 +134,10 @@
           <!-- Task Menu Dropdown -->
           <div id="task-menu" class="hidden absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-xl shadow-xl py-2 z-20 text-sm">
             <button onclick="clearCompletedTasks()" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2 text-gray-700">
-              <i class="fa-regular fa-trash-can text-xs"></i> Clear finished tasks
+              <i class="fa-regular fa-trash-can text-xs"></i> Xóa công việc đã hoàn thành
             </button>
             <button onclick="clearAllTasks()" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2 text-red-600">
-              <i class="fa-solid fa-trash text-xs"></i> Clear all tasks
+              <i class="fa-solid fa-trash text-xs"></i> Xóa tất cả công việc
             </button>
           </div>
         </div>
@@ -151,22 +151,22 @@
       <!-- Add Task Button / Form -->
       <div id="add-task-container">
         <button id="add-task-btn" onclick="showTaskForm()" class="w-full py-4 border-2 border-dashed border-white/30 hover:border-white/60 bg-black/10 hover:bg-black/20 rounded-xl font-medium flex items-center justify-center gap-2 text-white/90 transition">
-          <i class="fa-solid fa-circle-plus"></i> Add Task
+          <i class="fa-solid fa-circle-plus"></i> Thêm công việc
         </button>
 
         <!-- New Task Form (Hidden by default) -->
         <form id="task-form" onsubmit="handleTaskSubmit(event)" class="hidden bg-white text-gray-800 rounded-xl p-4 shadow-xl flex flex-col gap-3">
-          <input type="text" id="task-title-input" placeholder="What are you working on?" required class="w-full px-3 py-2 text-base font-medium text-gray-800 focus:outline-none placeholder-gray-400">
+          <input type="text" id="task-title-input" placeholder="Bạn đang làm việc gì?" required class="w-full px-3 py-2 text-base font-medium text-gray-800 focus:outline-none placeholder-gray-400">
           <div class="flex items-center gap-2 text-sm text-gray-600 px-1">
-            <label for="task-est-input" class="font-medium">Est Pomodoros:</label>
+            <label for="task-est-input" class="font-medium">Số Pomodoro dự kiến:</label>
             <input type="number" id="task-est-input" min="1" max="100" value="1" class="w-16 bg-gray-100 rounded px-2 py-1 text-center font-bold text-gray-800 border border-gray-300">
           </div>
           <div class="flex justify-end gap-2 bg-gray-50 -mx-4 -mb-4 p-3 rounded-b-xl border-t border-gray-100">
             <button type="button" onclick="hideTaskForm()" class="px-4 py-1.5 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-200 transition">
-              Cancel
+              Hủy
             </button>
             <button type="submit" class="px-5 py-1.5 rounded-lg text-sm font-semibold bg-gray-800 text-white hover:bg-gray-900 transition shadow">
-              Save
+              Lưu
             </button>
           </div>
         </form>
@@ -176,14 +176,14 @@
 
   <!-- Footer -->
   <footer class="w-full max-w-xl text-center text-xs text-white/60 py-6">
-    <p>Inspired by Pomofocus.io • Crafted with HTML, Tailwind & Vanilla JS</p>
+    <p>Lấy cảm hứng từ Pomofocus.io • Xây dựng bằng HTML, Tailwind & Vanilla JS</p>
   </footer>
 
   <!-- Settings Modal -->
   <div id="settings-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200">
     <div class="bg-white text-gray-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative transform scale-95 transition-transform duration-200" id="settings-modal-card">
       <div class="flex items-center justify-between border-b pb-3 mb-4">
-        <h3 class="font-bold text-lg text-gray-700 uppercase tracking-wider text-xs">Timer Settings</h3>
+        <h3 class="font-bold text-lg text-gray-700 uppercase tracking-wider text-xs">Cài đặt bộ đếm giờ</h3>
         <button onclick="closeSettingsModal()" class="text-gray-400 hover:text-gray-600 p-1">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
@@ -191,18 +191,18 @@
 
       <!-- Time Settings (Minutes) -->
       <div class="mb-6">
-        <label class="block text-sm font-semibold text-gray-600 mb-2">Time (minutes)</label>
+        <label class="block text-sm font-semibold text-gray-600 mb-2">Thời gian (phút)</label>
         <div class="grid grid-cols-3 gap-3">
           <div>
             <span class="text-xs text-gray-400 block mb-1">Pomodoro</span>
             <input type="number" id="setting-pomo" min="1" max="120" class="w-full bg-gray-100 border border-gray-200 rounded-lg px-3 py-2 font-bold text-gray-700 text-center focus:outline-none focus:ring-2 focus:ring-red-400">
           </div>
           <div>
-            <span class="text-xs text-gray-400 block mb-1">Short Break</span>
+            <span class="text-xs text-gray-400 block mb-1">Nghỉ ngắn</span>
             <input type="number" id="setting-short" min="1" max="60" class="w-full bg-gray-100 border border-gray-200 rounded-lg px-3 py-2 font-bold text-gray-700 text-center focus:outline-none focus:ring-2 focus:ring-teal-400">
           </div>
           <div>
-            <span class="text-xs text-gray-400 block mb-1">Long Break</span>
+            <span class="text-xs text-gray-400 block mb-1">Nghỉ dài</span>
             <input type="number" id="setting-long" min="1" max="60" class="w-full bg-gray-100 border border-gray-200 rounded-lg px-3 py-2 font-bold text-gray-700 text-center focus:outline-none focus:ring-2 focus:ring-blue-400">
           </div>
         </div>
@@ -211,15 +211,15 @@
       <!-- Sound & Auto Options -->
       <div class="flex flex-col gap-4 border-t pt-4">
         <div class="flex items-center justify-between">
-          <span class="text-sm font-medium text-gray-700">Auto-start Breaks</span>
+          <span class="text-sm font-medium text-gray-700">Tự động bắt đầu nghỉ</span>
           <input type="checkbox" id="setting-autobreak" class="w-5 h-5 accent-red-500 rounded cursor-pointer">
         </div>
         <div class="flex items-center justify-between">
-          <span class="text-sm font-medium text-gray-700">Auto-start Pomodoros</span>
+          <span class="text-sm font-medium text-gray-700">Tự động bắt đầu Pomodoro</span>
           <input type="checkbox" id="setting-autopomo" class="w-5 h-5 accent-red-500 rounded cursor-pointer">
         </div>
         <div class="flex items-center justify-between">
-          <span class="text-sm font-medium text-gray-700">Sound Volume</span>
+          <span class="text-sm font-medium text-gray-700">Âm lượng</span>
           <input type="range" id="setting-volume" min="0" max="100" value="80" class="accent-red-500 cursor-pointer">
         </div>
       </div>
@@ -227,7 +227,7 @@
       <!-- Modal Footer -->
       <div class="mt-6 pt-3 border-t flex justify-end">
         <button onclick="saveSettings()" class="bg-gray-800 hover:bg-gray-900 text-white font-semibold px-6 py-2 rounded-xl text-sm transition shadow">
-          OK
+          Xác nhận
         </button>
       </div>
     </div>
@@ -259,19 +259,19 @@
         bgClass: 'bg-work',
         btnTextHex: '#ba4949',
         shadowColor: '#ebebeb',
-        titleSuffix: 'Time to focus!'
+        titleSuffix: 'Thời gian tập trung!'
       },
       shortBreak: {
         bgClass: 'bg-short',
         btnTextHex: '#38858a',
         shadowColor: '#ebebeb',
-        titleSuffix: 'Time for a break!'
+        titleSuffix: 'Đã đến giờ nghỉ ngơi!'
       },
       longBreak: {
         bgClass: 'bg-long',
         btnTextHex: '#397097',
         shadowColor: '#ebebeb',
-        titleSuffix: 'Time for a long break!'
+        titleSuffix: 'Đã đến giờ nghỉ dài!'
       }
     };
 
@@ -369,7 +369,7 @@
       initAudio();
       isRunning = true;
       const startBtn = document.getElementById('start-btn');
-      startBtn.textContent = 'PAUSE';
+      startBtn.textContent = 'TẠM DỪNG';
       startBtn.style.boxShadow = 'none';
       startBtn.style.transform = 'translateY(4px)';
       document.getElementById('skip-btn').classList.remove('hidden');
@@ -388,7 +388,7 @@
       isRunning = false;
       clearInterval(timerInterval);
       const startBtn = document.getElementById('start-btn');
-      startBtn.textContent = 'START';
+      startBtn.textContent = 'BẮT ĐẦU';
       startBtn.style.boxShadow = `0 6px 0 ${modeThemes[currentMode].shadowColor}`;
       startBtn.style.transform = 'translateY(0px)';
     }
@@ -506,9 +506,9 @@
       const display = document.getElementById('current-task-display');
       const activeTask = tasks.find(t => t.id === activeTaskId);
       if (activeTask) {
-        display.textContent = `# Active Task: ${activeTask.title}`;
+        display.textContent = `# Đang làm: ${activeTask.title}`;
       } else {
-        display.textContent = 'Time to focus!';
+        display.textContent = 'Thời gian tập trung!';
       }
     }
 
@@ -641,7 +641,7 @@
     }
 
     function resetApp() {
-      if (confirm("Reset current timer?")) {
+      if (confirm("Đặt lại bộ đếm giờ hiện tại?")) {
         switchMode('pomodoro');
       }
     }
