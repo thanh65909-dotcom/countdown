@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>025:00 - Thời gian tập trung!</title>
+  <title>025:00 - Bộ đếm giờ Pomodoro</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts & FontAwesome Icons -->
@@ -52,19 +52,6 @@
       transform: translateY(4px);
       box-shadow: none !important;
     }
-
-    /* Custom Scrollbar for Tasks */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.05);
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 10px;
-    }
   </style>
 </head>
 <body id="app-body" class="bg-work text-white min-h-screen flex flex-col items-center justify-between p-4 selection:bg-white/20">
@@ -94,43 +81,25 @@
   </header>
 
   <!-- Main Container -->
-  <main class="w-full max-w-xl my-6 flex flex-col items-center gap-6">
+  <main class="w-full max-w-xl my-auto flex flex-col items-center gap-6">
 
-    <!-- Mode Selector Tabs & Main Timer Card -->
-    <div class="w-full bg-white/10 backdrop-blur-md rounded-2xl p-6 md:p-8 flex flex-col items-center shadow-lg border border-white/10">
-      
-      <!-- Modes Header -->
-      <div class="flex gap-2 mb-6 bg-black/10 p-1.5 rounded-xl w-full justify-around text-sm font-medium">
-        <button id="tab-pomodoro" onclick="switchMode('pomodoro')" class="flex-1 py-1.5 px-3 rounded-lg transition-all duration-200 font-semibold bg-white/20 shadow-sm" data-i18n="pomodoro">
-          Pomodoro
-        </button>
-        <button id="tab-shortBreak" onclick="switchMode('shortBreak')" class="flex-1 py-1.5 px-3 rounded-lg transition-all duration-200 opacity-80 hover:opacity-100" data-i18n="shortBreak">
-          Nghỉ ngắn
-        </button>
-        <button id="tab-longBreak" onclick="switchMode('longBreak')" class="flex-1 py-1.5 px-3 rounded-lg transition-all duration-200 opacity-80 hover:opacity-100" data-i18n="longBreak">
-          Nghỉ dài
-        </button>
-      </div>
+    <!-- Main Timer Card -->
+    <div class="w-full bg-white/10 backdrop-blur-md rounded-2xl p-8 sm:p-10 flex flex-col items-center shadow-lg border border-white/10">
 
-      <!-- Real-time Clock (Hanoi Time UTC+7) Widget positioned right above the countdown timer -->
-      <div class="flex items-center gap-2 text-white/80 text-sm font-medium mb-2 bg-black/10 py-1 px-3 rounded-full">
-        <i class="fa-regular fa-clock text-xs"></i>
+      <!-- Real-time Clock Widget (Tăng cỡ chữ to hơn) -->
+      <div class="flex items-center gap-2.5 text-white/95 text-base sm:text-lg font-semibold mb-2 bg-black/20 py-2 px-5 rounded-full backdrop-blur-md shadow-inner">
+        <i class="fa-regular fa-clock text-lg"></i>
         <span data-i18n="hanoiTime">Giờ Hà Nội (GMT+7):</span>
-        <span id="realtime-clock" class="font-mono font-bold tracking-wide">--:--:--</span>
+        <span id="realtime-clock" class="font-mono font-bold text-lg sm:text-xl text-yellow-300">--:--:--</span>
       </div>
 
       <!-- Timer Display -->
-      <div id="timer-display" class="font-fredoka text-7xl sm:text-9xl font-bold tracking-tight my-4 select-none drop-shadow-md">
+      <div id="timer-display" class="font-fredoka text-7xl sm:text-9xl font-bold tracking-tight my-6 select-none drop-shadow-md">
         25:00
       </div>
 
-      <!-- Active Task Label Indicator inside timer -->
-      <div id="current-task-display" class="text-white/80 text-sm font-medium mb-6 min-h-[1.25rem] text-center max-w-xs truncate" data-i18n="focusTime">
-        Thời gian tập trung!
-      </div>
-
       <!-- Action Buttons (Start/Pause & Skip) -->
-      <div class="flex items-center gap-4 w-full justify-center">
+      <div class="flex items-center gap-4 w-full justify-center mt-2">
         <button id="start-btn" onclick="toggleTimer()" class="btn-press uppercase tracking-wider text-2xl font-bold px-12 py-3.5 rounded-xl bg-white text-pomo-work shadow-[0_6px_0_#ebebeb] hover:bg-white/95 transition-all w-48" data-i18n="start">
           BẮT ĐẦU
         </button>
@@ -139,60 +108,10 @@
         </button>
       </div>
     </div>
-
-    <!-- Task Management Section -->
-    <div class="w-full flex flex-col gap-4">
-      <div class="flex items-center justify-between border-b border-white/20 pb-3">
-        <h2 class="text-lg font-semibold tracking-wide" data-i18n="tasks">Công việc</h2>
-        <div class="relative group">
-          <button onclick="toggleTaskMenu()" class="bg-white/20 hover:bg-white/30 p-2 rounded-lg text-sm transition">
-            <i class="fa-solid fa-ellipsis-vertical px-1"></i>
-          </button>
-          <!-- Task Menu Dropdown -->
-          <div id="task-menu" class="hidden absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-xl shadow-xl py-2 z-20 text-sm">
-            <button onclick="clearCompletedTasks()" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2 text-gray-700" data-i18n="clearFinished">
-              <i class="fa-regular fa-trash-can text-xs"></i> Xóa công việc đã hoàn thành
-            </button>
-            <button onclick="clearAllTasks()" class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2 text-red-600" data-i18n="clearAll">
-              <i class="fa-solid fa-trash text-xs"></i> Xóa tất cả công việc
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Task List Container -->
-      <div id="task-list" class="flex flex-col gap-2.5 max-h-80 overflow-y-auto pr-1">
-        <!-- Tasks dynamically inserted here -->
-      </div>
-
-      <!-- Add Task Button / Form -->
-      <div id="add-task-container">
-        <button id="add-task-btn" onclick="showTaskForm()" class="w-full py-4 border-2 border-dashed border-white/30 hover:border-white/60 bg-black/10 hover:bg-black/20 rounded-xl font-medium flex items-center justify-center gap-2 text-white/90 transition">
-          <i class="fa-solid fa-circle-plus"></i> <span data-i18n="addTask">Thêm công việc</span>
-        </button>
-
-        <!-- New Task Form (Hidden by default) -->
-        <form id="task-form" onsubmit="handleTaskSubmit(event)" class="hidden bg-white text-gray-800 rounded-xl p-4 shadow-xl flex flex-col gap-3">
-          <input type="text" id="task-title-input" placeholder="Bạn đang làm việc gì?" required class="w-full px-3 py-2 text-base font-medium text-gray-800 focus:outline-none placeholder-gray-400" data-i18n-placeholder="taskPlaceholder">
-          <div class="flex items-center gap-2 text-sm text-gray-600 px-1">
-            <label for="task-est-input" class="font-medium" data-i18n="estPomodoros">Số Pomodoro dự kiến:</label>
-            <input type="number" id="task-est-input" min="1" max="100" value="1" class="w-16 bg-gray-100 rounded px-2 py-1 text-center font-bold text-gray-800 border border-gray-300">
-          </div>
-          <div class="flex justify-end gap-2 bg-gray-50 -mx-4 -mb-4 p-3 rounded-b-xl border-t border-gray-100">
-            <button type="button" onclick="hideTaskForm()" class="px-4 py-1.5 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-200 transition" data-i18n="cancel">
-              Hủy
-            </button>
-            <button type="submit" class="px-5 py-1.5 rounded-lg text-sm font-semibold bg-gray-800 text-white hover:bg-gray-900 transition shadow" data-i18n="save">
-              Lưu
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
   </main>
 
   <!-- Footer -->
-  <footer class="w-full max-w-xl text-center text-xs text-white/60 py-6"></footer>
+  <footer class="w-full max-w-xl text-center text-xs text-white/60 py-4"></footer>
 
   <!-- Settings Modal -->
   <div id="settings-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200">
@@ -258,27 +177,16 @@
         pomodoro: "Pomodoro",
         shortBreak: "Nghỉ ngắn",
         longBreak: "Nghỉ dài",
-        focusTime: "Thời gian tập trung!",
         start: "BẮT ĐẦU",
         pause: "TẠM DỪNG",
         hanoiTime: "Giờ Hà Nội (GMT+7):",
-        tasks: "Công việc",
-        clearFinished: "Xóa công việc đã hoàn thành",
-        clearAll: "Xóa tất cả công việc",
-        addTask: "Thêm công việc",
-        taskPlaceholder: "Bạn đang làm việc gì?",
-        estPomodoros: "Số Pomodoro dự kiến:",
-        cancel: "Hủy",
-        save: "Lưu",
         timerSettings: "Cài đặt bộ đếm giờ",
         timeMinutes: "Thời gian (phút)",
         autoBreak: "Tự động bắt đầu nghỉ",
         autoPomo: "Tự động bắt đầu Pomodoro",
         volume: "Âm lượng",
         confirm: "Xác nhận",
-        titleFocus: "Thời gian tập trung!",
-        titleBreak: "Đã đến giờ nghỉ ngơi!",
-        titleLongBreak: "Đã đến giờ nghỉ dài!"
+        titleFocus: "Thời gian tập trung!"
       },
       en: {
         langName: "English",
@@ -286,27 +194,16 @@
         pomodoro: "Pomodoro",
         shortBreak: "Short Break",
         longBreak: "Long Break",
-        focusTime: "Time to focus!",
         start: "START",
         pause: "PAUSE",
         hanoiTime: "Hanoi Time (GMT+7):",
-        tasks: "Tasks",
-        clearFinished: "Clear finished tasks",
-        clearAll: "Clear all tasks",
-        addTask: "Add Task",
-        taskPlaceholder: "What are you working on?",
-        estPomodoros: "Est Pomodoros:",
-        cancel: "Cancel",
-        save: "Save",
         timerSettings: "Timer Settings",
         timeMinutes: "Time (minutes)",
         autoBreak: "Auto-start Breaks",
         autoPomo: "Auto-start Pomodoros",
         volume: "Sound Volume",
         confirm: "OK",
-        titleFocus: "Time to focus!",
-        titleBreak: "Time for a break!",
-        titleLongBreak: "Time for a long break!"
+        titleFocus: "Time to focus!"
       },
       zh: {
         langName: "中文",
@@ -314,27 +211,16 @@
         pomodoro: "专注",
         shortBreak: "短休",
         longBreak: "长休",
-        focusTime: "是时候专注了！",
         start: "开始",
         pause: "暂停",
         hanoiTime: "河内时间 (GMT+7):",
-        tasks: "任务",
-        clearFinished: "清除已完成任务",
-        clearAll: "清除所有任务",
-        addTask: "添加任务",
-        taskPlaceholder: "你在做什么？",
-        estPomodoros: "预计番茄数:",
-        cancel: "取消",
-        save: "保存",
         timerSettings: "计时器设置",
         timeMinutes: "时间（分钟）",
         autoBreak: "自动开始休息",
         autoPomo: "自动开始专注",
         volume: "音量",
         confirm: "确定",
-        titleFocus: "是时候专注了！",
-        titleBreak: "是时候休息了！",
-        titleLongBreak: "是时候长休了！"
+        titleFocus: "是时候专注了！"
       }
     };
 
@@ -354,13 +240,6 @@
         const key = el.getAttribute('data-i18n');
         if (translations[lang][key]) {
           el.textContent = translations[lang][key];
-        }
-      });
-
-      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.getAttribute('data-i18n-placeholder');
-        if (translations[lang][key]) {
-          el.placeholder = translations[lang][key];
         }
       });
 
@@ -408,9 +287,6 @@
     let timeLeft = config.pomodoro * 60;
     let timerInterval = null;
     let isRunning = false;
-    let tasks = [];
-    let activeTaskId = null;
-    let editingTaskId = null;
 
     const modeThemes = {
       pomodoro: {
@@ -418,18 +294,6 @@
         btnTextHex: '#ba4949',
         shadowColor: '#ebebeb',
         titleKey: 'titleFocus'
-      },
-      shortBreak: {
-        bgClass: 'bg-short',
-        btnTextHex: '#38858a',
-        shadowColor: '#ebebeb',
-        titleKey: 'titleBreak'
-      },
-      longBreak: {
-        bgClass: 'bg-long',
-        btnTextHex: '#397097',
-        shadowColor: '#ebebeb',
-        titleKey: 'titleLongBreak'
       }
     };
 
@@ -524,7 +388,6 @@
       startBtn.textContent = translations[currentLang].pause;
       startBtn.style.boxShadow = 'none';
       startBtn.style.transform = 'translateY(4px)';
-      document.getElementById('skip-btn').classList.remove('hidden');
 
       timerInterval = setInterval(() => {
         if (timeLeft > 0) {
@@ -545,196 +408,9 @@
       startBtn.style.transform = 'translateY(0px)';
     }
 
-    function skipTimer() {
-      playClickSound();
-      pauseTimer();
-      if (currentMode === 'pomodoro') {
-        switchMode('shortBreak');
-      } else {
-        switchMode('pomodoro');
-      }
-    }
-
     function timerComplete() {
       pauseTimer();
       playAlarmSound();
-
-      if (currentMode === 'pomodoro' && activeTaskId) {
-        const task = tasks.find(t => t.id === activeTaskId);
-        if (task) {
-          task.act = (task.act || 0) + 1;
-          saveTasksToStorage();
-          renderTasks();
-        }
-      }
-
-      if (currentMode === 'pomodoro') {
-        switchMode('shortBreak');
-        if (config.autoStartBreaks) startTimer();
-      } else {
-        switchMode('pomodoro');
-        if (config.autoStartPomodoros) startTimer();
-      }
-    }
-
-    function switchMode(mode) {
-      currentMode = mode;
-      pauseTimer();
-      timeLeft = config[mode] * 60;
-
-      const body = document.getElementById('app-body');
-      body.className = `${modeThemes[mode].bgClass} text-white min-h-screen flex flex-col items-center justify-between p-4 selection:bg-white/20`;
-
-      ['pomodoro', 'shortBreak', 'longBreak'].forEach(m => {
-        const tab = document.getElementById(`tab-${m}`);
-        if (m === mode) {
-          tab.className = 'flex-1 py-1.5 px-3 rounded-lg transition-all duration-200 font-semibold bg-white/20 shadow-sm';
-        } else {
-          tab.className = 'flex-1 py-1.5 px-3 rounded-lg transition-all duration-200 opacity-80 hover:opacity-100';
-        }
-      });
-
-      const startBtn = document.getElementById('start-btn');
-      startBtn.style.color = modeThemes[mode].btnTextHex;
-
-      updateDisplay();
-    }
-
-    function renderTasks() {
-      const listEl = document.getElementById('task-list');
-      listEl.innerHTML = '';
-
-      tasks.forEach(task => {
-        const isActive = task.id === activeTaskId;
-        const taskCard = document.createElement('div');
-        taskCard.className = `bg-white text-gray-800 rounded-xl p-4 flex items-center justify-between shadow-md transition-all border-l-8 ${
-          isActive ? 'border-gray-800 ring-2 ring-white/50' : 'border-transparent hover:bg-gray-50'
-        } ${task.completed ? 'opacity-60' : ''}`;
-
-        taskCard.onclick = (e) => {
-          if (e.target.closest('button')) return;
-          setActiveTask(task.id);
-        };
-
-        taskCard.innerHTML = `
-          <div class="flex items-center gap-3 cursor-pointer overflow-hidden">
-            <button onclick="toggleTaskComplete('${task.id}')" class="text-xl text-gray-300 hover:text-green-500 transition">
-              <i class="${task.completed ? 'fa-solid fa-circle-check text-green-500' : 'fa-regular fa-circle'}"></i>
-            </button>
-            <span class="font-semibold text-gray-800 truncate ${task.completed ? 'line-through text-gray-400' : ''}">
-              ${escapeHtml(task.title)}
-            </span>
-          </div>
-          <div class="flex items-center gap-3 shrink-0">
-            <span class="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded-md">
-              ${task.act || 0} / ${task.est}
-            </span>
-            <button onclick="deleteTask('${task.id}')" class="text-gray-300 hover:text-red-500 transition p-1">
-              <i class="fa-solid fa-trash-can text-sm"></i>
-            </button>
-          </div>
-        `;
-
-        listEl.appendChild(taskCard);
-      });
-
-      updateActiveTaskDisplay();
-    }
-
-    function setActiveTask(id) {
-      playClickSound();
-      activeTaskId = (activeTaskId === id) ? null : id;
-      renderTasks();
-    }
-
-    function updateActiveTaskDisplay() {
-      const display = document.getElementById('current-task-display');
-      const activeTask = tasks.find(t => t.id === activeTaskId);
-      if (activeTask) {
-        display.textContent = `# ${activeTask.title}`;
-      } else {
-        display.textContent = translations[currentLang].focusTime;
-      }
-    }
-
-    function toggleTaskComplete(id) {
-      playClickSound();
-      const task = tasks.find(t => t.id === id);
-      if (task) {
-        task.completed = !task.completed;
-        saveTasksToStorage();
-        renderTasks();
-      }
-    }
-
-    function deleteTask(id) {
-      playClickSound();
-      tasks = tasks.filter(t => t.id !== id);
-      if (activeTaskId === id) activeTaskId = null;
-      saveTasksToStorage();
-      renderTasks();
-    }
-
-    function showTaskForm() {
-      playClickSound();
-      document.getElementById('add-task-btn').classList.add('hidden');
-      document.getElementById('task-form').classList.remove('hidden');
-      document.getElementById('task-title-input').focus();
-    }
-
-    function hideTaskForm() {
-      document.getElementById('add-task-btn').classList.remove('hidden');
-      document.getElementById('task-form').classList.add('hidden');
-      document.getElementById('task-title-input').value = '';
-      document.getElementById('task-est-input').value = 1;
-    }
-
-    function handleTaskSubmit(e) {
-      e.preventDefault();
-      playClickSound();
-
-      const titleInput = document.getElementById('task-title-input');
-      const estInput = document.getElementById('task-est-input');
-
-      const newTask = {
-        id: Date.now().toString(),
-        title: titleInput.value.trim(),
-        est: parseInt(estInput.value) || 1,
-        act: 0,
-        completed: false
-      };
-
-      tasks.push(newTask);
-      if (!activeTaskId) activeTaskId = newTask.id;
-
-      saveTasksToStorage();
-      renderTasks();
-      hideTaskForm();
-    }
-
-    function toggleTaskMenu() {
-      const menu = document.getElementById('task-menu');
-      menu.classList.toggle('hidden');
-    }
-
-    function clearCompletedTasks() {
-      playClickSound();
-      tasks = tasks.filter(t => !t.completed);
-      if (activeTaskId && !tasks.find(t => t.id === activeTaskId)) {
-        activeTaskId = null;
-      }
-      saveTasksToStorage();
-      renderTasks();
-      toggleTaskMenu();
-    }
-
-    function clearAllTasks() {
-      playClickSound();
-      tasks = [];
-      activeTaskId = null;
-      saveTasksToStorage();
-      renderTasks();
-      toggleTaskMenu();
     }
 
     function openSettingsModal() {
@@ -783,40 +459,16 @@
       }
     }
 
-    function saveTasksToStorage() {
-      localStorage.setItem('pomo_tasks', JSON.stringify(tasks));
-    }
-
     function loadLocalStorage() {
       const savedConfig = localStorage.getItem('pomo_config');
       if (savedConfig) {
         try { config = { ...config, ...JSON.parse(savedConfig) }; } catch (e) {}
       }
-
-      const savedTasks = localStorage.getItem('pomo_tasks');
-      if (savedTasks) {
-        try { 
-          tasks = JSON.parse(savedTasks);
-          if (tasks.length > 0) activeTaskId = tasks[0].id;
-        } catch (e) {}
-      }
     }
-
-    function escapeHtml(str) {
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-    }
-
-    document.addEventListener('click', (e) => {
-      const taskMenu = document.getElementById('task-menu');
-      if (!e.target.closest('#task-menu') && !e.target.closest('button[onclick="toggleTaskMenu()"]')) {
-        taskMenu.classList.add('hidden');
-      }
-    });
 
     window.onload = function () {
       loadLocalStorage();
-      switchMode('pomodoro');
-      renderTasks();
+      updateDisplay();
     };
   </script>
 </body>
